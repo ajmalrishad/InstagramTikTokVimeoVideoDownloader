@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter URL</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <style>
+        form {
+            width: 50%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+        }
+
+        form button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center mb-4">
+                <h1 class="h4 text-gray-900">Download video!</h1>
+            </div>
+
+            <form id="urlForm" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateURL() {
+        var allowedDomains = ['instagram.com', 'vimeo.com', 'tiktok.com'];
+        var currentURL = window.location.href;
+        var isValid = false;
+
+        for (var i = 0; i < allowedDomains.length; i++) {
+            if (currentURL.includes(allowedDomains[i])) {
+                isValid = true;
+            }
+        }
+
+        if (!isValid) {
+            alert("This website only accepts URLs from Instagram, Vimeo, and TikTok.");
+        }
+    }
+
+    window.onload = validateURL;
+</script>
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    Toastify({
+
+        text: "{{ message }}",
+        
+        duration: 5000
+        
+        }).showToast();
+    {% endfor %}
+    {% endif %}
+</script>
+</body>
+</html>

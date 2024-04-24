@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Download</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/tiktok.ico' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="{{ thumbnail_url }}" alt="Video Thumbnail" style="max-width: 300px; max-height: 300px;">
+        <p>{{ title }}</p>
+        <div>
+            <a href="{% url 'tiktok_download' %}?url={{ video_url }}" class="btn btn-primary">Download Video</a>
+        </div>
+    </div>
+</body>
+<script>
+    {% if messages %}
+    {% for message in messages %}
+    Toastify({
+
+        text: "{{ message }}",
+        
+        duration: 5000
+        
+        }).showToast();
+    {% endfor %}
+    {% endif %}
+</script>
+</html>

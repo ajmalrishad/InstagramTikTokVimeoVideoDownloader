@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vimeo Download Page</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/vimeo.ico' %}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="{{ thumbnail_url }}" alt="Video Thumbnail" style="max-width: 300px; max-height: 300px;">
+        <p>{{ video_title }}</p>
+        <div>
+            <button id="downloadBtn" class="btn btn-primary">Download Video</button>
+        </div>
+    </div>
+</body>
+<script>
+        function downloadVideo(videoUrl) {
+            const link = document.createElement('a');
+            link.href = videoUrl;
+            link.download = 'video.mp4'; // You can change the file name if needed
+            link.click();
+        }
+
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        downloadBtn.addEventListener('click', () => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'download_vimeo_video?url={{ video_url }}', true);
+            xhr.responseType = 'text';
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const videoUrl = xhr.response;
+                    downloadVideo(videoUrl);
+                     Toastify({
+                        text: "Vimeo Video Downloaded Successfully",
+                        duration: 5000
+                    }).showToast();
+                } else {
+                    Toastify({
+                        text: "Error downloading video. Please try again.",
+                        duration: 5000
+                    }).showToast();
+                }
+            };
+
+            xhr.send();
+        });
+    </script>
+</html>
